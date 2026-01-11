@@ -1,15 +1,18 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using WebVisor.Models;
+using WebVisor.Models.Services;
 
 namespace WebVisor.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IFhirService _fhirService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IFhirService fhirService, ILogger<HomeController> logger)
         {
+            _fhirService = fhirService;
             _logger = logger;
         }
 
@@ -18,15 +21,20 @@ namespace WebVisor.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> SearchPatient(string documentType, string documentNumber)
         {
-            return View();
+            try
+            {
+                var patientSummary = await _fhirService.GetPatientSummaryAsync(documentType, documentNumber);
+                return Json(new { success = true, data = patientSummary });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error buscando paciente");
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

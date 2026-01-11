@@ -1,8 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Visor de Historia Clínica - Sandbox";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Consulta Información Resumen Digital de Atención en Salud - Ambiente SANDBOX</h1>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="documentType">Tipo de Documento</label>
+                        <select id="documentType" class="form-control">
+                            <option value="CC">Cédula de ciudadanía</option>
+                            <option value="TI">Tarjeta de identidad</option>
+                            <option value="CE">Cédula de extranjería</option>
+                            <option value="PA">Pasaporte</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="documentNumber">Número de Documento</label>
+                        <input type="text" id="documentNumber" class="form-control" placeholder="Dígita el Número de Documento">
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="btnSearch" class="btn btn-primary btn-block">
+                        <i class="fas fa-search"></i> Consultar Información
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="patientInfo" class="mt-4" style="display: none;">
+        <!-- Información del paciente se cargará aquí -->
+    </div>
+
+    <div id="attentionHistory" class="mt-4" style="display: none;">
+        <h3>Historial de Atenciones en Salud</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Formato</th>
+                        <th>Región</th>
+                        <th>Autor</th>
+                        <th>Fecha Carga</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="rdaTableBody">
+                    <!-- RDAs se cargarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/consulta_rda.js"></script>
+    <script src="~/js/visor.js"></script>
+}
